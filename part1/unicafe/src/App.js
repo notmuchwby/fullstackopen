@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 
 
-const Button = ({onClick, text}) => {
-  
+const Button = ({onClick, text}) => {  
   return (
     <button onClick={onClick}>
       {text}
@@ -10,25 +9,39 @@ const Button = ({onClick, text}) => {
   )
 }
 
+const StatisticLine = ({text, value}) => {
+  return (
+    <p>{text} {value}</p>
+  )
+}
+ 
 const Statistics = ({good, bad, neutral}) => {  
   
   let average = 0
   let positive = 0
   let total = good + bad + neutral 
 
-  if(total > 0) { 
+  if(total === 0) {
+    return (
+      <div>
+        No feedback given
+      </div>
+    )
+  }
+
+  else if(total > 0) { 
       average = (good - bad) / total
       positive = good / total  * 100 
   }
 
   return (
     <div>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-      <p>all {total}</p>
-      <p>average {average} </p>
-      <p>positive {positive} % </p>
+      <StatisticLine text='good' value={good}/>
+      <StatisticLine text='neutral' value={neutral}/>
+      <StatisticLine text='bad' value={bad}/>
+      <StatisticLine text='all' value={total}/>
+      <StatisticLine text='average' value={average}/>
+      <StatisticLine text='positive' value={positive}/>
     </div>
   )
 }
