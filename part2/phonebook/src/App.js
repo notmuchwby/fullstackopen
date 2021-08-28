@@ -44,7 +44,21 @@ const App = () => {
   }
 
 
-
+  const PersonFrom = ({addName, handleAddName, handleAddNumber}) => {
+    return (
+      <form onSubmit={addName}>
+        <div>
+          name: <input value={newName} onChange={handleAddName}/>
+        </div>
+        <div>
+          number: <input value={newNumber} onChange={handleAddNumber}/>
+        </div>
+        <div>
+          <button type="submit">add</button>
+        </div>  
+    </form>
+    )
+  }
   
   const DisplayPersons = ({persons}) => {
     if(findPerson === '') {
@@ -70,17 +84,7 @@ const App = () => {
         filter shown with<input value={findPerson} onChange={handleFindPerson}/>
       </div>
       <h2>add a new</h2>
-      <form onSubmit={addName}>
-        <div>
-          name: <input value={newName} onChange={handleAddName}/>
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleAddNumber}/>
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>  
-      </form>
+      <PersonFrom addName={addName} handleAddName={handleAddName} handleAddNumber={handleAddNumber}/>
       <h2>Numbers</h2>
       <DisplayPersons persons={persons}/>
     </div>
