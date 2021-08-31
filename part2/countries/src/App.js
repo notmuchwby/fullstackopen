@@ -17,7 +17,8 @@ const CountrySearchItem = ({countryFound}) => (
   </div>
 )
 
-const CountryFound = ({countriesList, countryEntered}) => {
+
+const CountryFound = ({countriesList, countryEntered, setCountryEntered}) => {
   const countryFound = countriesList.filter(country => country.name.toLowerCase().includes(countryEntered.toLowerCase()))
   console.log(countryFound)
 
@@ -32,8 +33,14 @@ const CountryFound = ({countriesList, countryEntered}) => {
       </div>
     )
   } else if(countryFound.length <= 10  && countryFound.length !== 1) {
+   
     return (
-      <div>{countryFound.map(countryFound => <p key={countryFound.alpha2Code}>{countryFound.name}</p>)}</div>
+      <div>{countryFound.map(countryFound => 
+        <form key={countryFound.alpha2Code}>{countryFound.name}
+          <button onClick={() => setCountryEntered(countryFound.name)}>show</button>
+        </form>)}
+
+      </div>
     )
   } 
   return (
@@ -68,7 +75,7 @@ const App = () => {
   return (
     <div>
        <EnterCountries countryEntered={countryEntered} handleSetCountry={handleSetCountry}/>
-       <CountryFound  countriesList={countriesList} countryEntered={countryEntered}/>
+       <CountryFound  countriesList={countriesList} countryEntered={countryEntered} setCountryEntered={setCountryEntered}/>
     </div>
   );
 }
