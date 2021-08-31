@@ -1,8 +1,19 @@
 import { useState, useEffect} from "react";
 import axios from 'axios'
 
-const CountrySearchItem = ({countryFound}) => ( 
-  <div>
+const CountrySearchItem = ({countryFound}) => {
+  const [weather, setWeather] = useState()
+  const api_key = process.env.REACT_APP_API_KEY
+
+  useEffect(() => {
+    axios.get('http://api.openweathermap.org/data/2.5/weather?q=' + countryFound.capital + '&APPID=' + api_key)
+    .then(response => setWeather(response.data))
+  })
+
+  console.log(weather)
+
+  return (
+    <div>
       <h2>{countryFound.name}</h2>
       <p>capital: {countryFound.capital}</p>
       <p>population: {countryFound.population}</p>
@@ -14,8 +25,14 @@ const CountrySearchItem = ({countryFound}) => (
         )}
       </ul>
       <img src={countryFound.flag} alt={'flag'} height="124px" width="124px"/>
+
+      <h2>Weather in {countryFound.capital}</h2>
+      <p><b>temperature:</b> {parseInt(weather?.main?.temp - 273)} celsius</p>
+      <p>{weather?.weather[0]?.description}</p>
+      <p>wind speed : {weather?.wind?.speed}</p>
   </div>
-)
+  )
+}
 
 
 const CountryFound = ({countriesList, countryEntered, setCountryEntered}) => {
@@ -36,15 +53,15 @@ const CountryFound = ({countriesList, countryEntered, setCountryEntered}) => {
    
     return (
       <div>{countryFound.map(countryFound => 
-        <form key={countryFound.alpha2Code}>{countryFound.name}
+        <form key={countryFound.alpha2Code}>
+          {countryFound.name}
           <button onClick={() => setCountryEntered(countryFound.name)}>show</button>
         </form>)}
-
       </div>
     )
   } 
   return (
-    countryFound.map(countryFound => <CountrySearchItem key={countryFound.alpha2Code} countryFound={countryFound} />)
+    countryFound.map(countryFound => <CountrySearchItem key={countryFound.alpha2Code} countryFound={countryFound}/>)
   )
 }
 
@@ -75,7 +92,7 @@ const App = () => {
   return (
     <div>
        <EnterCountries countryEntered={countryEntered} handleSetCountry={handleSetCountry}/>
-       <CountryFound  countriesList={countriesList} countryEntered={countryEntered} setCountryEntered={setCountryEntered}/>
+       <CountryFound countriesList={countriesList} countryEntered={countryEntered} setCountryEntered={setCountryEntered}/>
     </div>
   );
 }
