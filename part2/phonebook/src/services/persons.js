@@ -16,15 +16,15 @@ const deletePerson = (id) => {
     axios.delete(`${baseUrl}/${id}`)    
 }
 
-// const changeNumber = (id, persons, newNumber, setPersons) => {
-//     const personToChange = persons.find(person => person.id === id)
-//     const changedPersons = {...personToChange, number: newNumber}
+const changeNumber = (id, persons, newNumber, setPersons) => {
+    const personToChange = persons.find(person => person.id === id)
+    const changedPersons = {...personToChange, number: newNumber}
 
-//     return axios.put(`${baseUrl}/${id}`, changedPersons)
-//     .then(returnedPersons => {
-//         setPersons(returnedPersons.map(person => person.id !== id ? person : changedPersons))
-//     })
-// }
+    return axios.put(`${baseUrl}/${id}`, changedPersons)
+    .then(response => {
+        setPersons(persons.map(person => person.id !== id ? person : response.data))
+    })
+}
 
-const personService = {getAll, createPerson, deletePerson}
+const personService = {getAll, createPerson, deletePerson, changeNumber}
 export default personService
