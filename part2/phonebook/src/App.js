@@ -1,29 +1,48 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import DisplayPersons from './components/display'
+import FilterPersons from './components/filter'
+import AddPersonsForm from './components/add'
+import personService from './services/persons'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ])
+  const [ persons, setPersons] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ findPerson, setFindPeson ] = useState('')
 
+  const fetchPersons = () => {
+    personService.getAll().then(setPersons)
+  }
 
-  const addName = (event) => {
+  useEffect(fetchPersons, [])
+
+  const deletePerson = (id) => {
+    if (window.confirm("Do you want to delete this person?")) {
+      personService.deletePerson(id)
+      fetchPersons()
+    }
+  }
+
+  const addPerson = (event) => {
+    console.log("it works")
     event.preventDefault();
     const samePerson = persons.some(person => person.name === newName)
     const sameNumber = persons.some(person => person.number === newNumber)
+
+    const newPerson = {
+      name: newName, 
+      number: newNumber
+    }
 
     if(samePerson || sameNumber) {
       alert("that name or the phone is already in a phonebook")
       setNewName('');
       setNewNumber('');
     } else {
-      setPersons(persons.concat({ name: newName ,
-                                  number : newNumber}))
+      personService.createPerson(newPerson)
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+      })
       setNewName('');
       setNewNumber('');
     }  
@@ -44,49 +63,19 @@ const App = () => {
   }
 
 
-  const PersonFrom = ({addName, handleAddName, handleAddNumber}) => {
-    return (
-      <form onSubmit={addName}>
-        <div>
-          name: <input value={newName} onChange={handleAddName}/>
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleAddNumber}/>
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>  
-    </form>
-    )
-  }
-  
-  const DisplayPersons = ({persons}) => {
-    if(findPerson === '') {
-      return (
-        <div>
-          {persons.map(person => <p key={person.name}>{person.name} {person.number}</p>)}
-        </div>
-      )
-    } else {
-      const foundPeople = persons.filter(person => person.name.toLowerCase().includes(findPerson.toLowerCase()))
-      return (
-        <div>
-         {foundPeople.map(person => <p key={person.name}>{person.name} {person.number}</p>)}
-        </div>
-      )
-    }
-  }
-
   return (
     <div>
       <div>
-        <h2>Phonebook</h2>
-        filter shown with<input value={findPerson} onChange={handleFindPerson}/>
-      </div>
-      <h2>add a new</h2>
-      <PersonFrom addName={addName} handleAddName={handleAddName} handleAddNumber={handleAddNumber}/>
-      <h2>Numbers</h2>
-      <DisplayPersons persons={persons}/>
+        <h2>Phonebook</h2>     
+        </div>
+        <FilterPersons persons={persons} findPerson={findPerson} handleFindPerson={handleFindPerson} />
+
+        <h2>add a new</h2>
+        <AddPersonsForm addPerson={addPerson} newName={newName} newNumber={newNumber} 
+        handleAddName={handleAddName} handleAddNumber={handleAddNumber}/>
+        
+        <h2>Numbers</h2>
+        <DisplayPersons persons={persons} findPerson={findPerson} deletePerson={deletePerson}/>
     </div>
   )
 }
