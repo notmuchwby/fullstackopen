@@ -8,7 +8,7 @@ const CountrySearchItem = ({countryFound}) => {
   useEffect(() => {
     axios.get('http://api.openweathermap.org/data/2.5/weather?q=' + countryFound.capital + '&APPID=' + api_key)
     .then(response => setWeather(response.data))
-  })
+  }, [api_key, countryFound.capital])
 
   console.log(weather)
 
@@ -53,10 +53,10 @@ const CountryFound = ({countriesList, countryEntered, setCountryEntered}) => {
    
     return (
       <div>{countryFound.map(countryFound => 
-        <form key={countryFound.alpha2Code}>
+        <div key={countryFound.alpha2Code}>
           {countryFound.name}
           <button onClick={() => setCountryEntered(countryFound.name)}>show</button>
-        </form>)}
+        </div>)}
       </div>
     )
   } 

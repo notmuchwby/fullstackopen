@@ -1,14 +1,3 @@
 {
-  "persons": [
-    {
-      "name": "Dan Abramov",
-      "number": "4442222",
-      "id": 3
-    },
-    {
-      "name": "Phil",
-      "number": "42424",
-      "id": 5
-    }
-  ]
+  "persons": []
 }

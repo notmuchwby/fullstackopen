@@ -3,12 +3,14 @@ import DisplayPersons from './components/display'
 import FilterPersons from './components/filter'
 import AddPersonsForm from './components/add'
 import personService from './services/persons'
+import Notification from './components/notification'
 
 const App = () => {
   const [ persons, setPersons] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ findPerson, setFindPeson ] = useState('')
+  const [ notification, setNotificationMessage ] = useState(null)
 
   const fetchPersons = () => {
     personService.getAll().then(setPersons)
@@ -16,15 +18,14 @@ const App = () => {
 
   useEffect(fetchPersons, [])
 
-  const deletePerson = (id) => {
+  const removePerson = (id) => {
     if (window.confirm("Do you want to delete this person?")) {
-      personService.deletePerson(id)
+      personService.deletePerson(id, setNotificationMessage)
       fetchPersons()
     }
   }
 
   const addPerson = (event) => {
-    console.log("it works")
     event.preventDefault();
     const sameName = persons.find(person => person.name === newName)
     const sameNumber = persons.find(person => person.number === newNumber)
@@ -36,7 +37,7 @@ const App = () => {
 
     if (sameName) {
       if (window.confirm(`${sameName.name} is already added to the phonebook, want to replace the old number with the new one?`)) {
-        personService.changeNumber(sameName.id, persons, newNumber, setPersons)
+        personService.changeNumber(sameName.id, persons, newNumber, setPersons, setNotificationMessage)
           setNewName('');
           setNewNumber('');
       }
@@ -48,31 +49,13 @@ const App = () => {
       number: newNumber
     }
 
-    personService.createPerson(newPerson)
+    personService.createPerson(newPerson, setNotificationMessage)
     .then(returnedPerson => {
       setPersons(persons.concat(returnedPerson))
     })
     setNewName('');
     setNewNumber('');
 
-
-    // if(sameName && sameNumber) {
-    //     alert("The person with the same number already in the phonebook")
-    //   } else if(sameName) {
-
-    //     if (window.confirm(`${sameName.name} is already added to the phonebook, want to replace the old number with the new one?`)) {
-    //       personService.changeNumber(sameName.id, persons, newNumber, setPersons)
-    //       setNewName('');
-    //       setNewNumber('');
-    //     }
-    // } else {
-    //   personService.createPerson(newPerson)
-    //   .then(returnedPerson => {
-    //     setPersons(persons.concat(returnedPerson))
-    //   })
-    //   setNewName('');
-    //   setNewNumber('');
-    // }  
   }
 
   const handleAddName = (event) => {
@@ -92,9 +75,8 @@ const App = () => {
 
   return (
     <div>
-      <div>
-        <h2>Phonebook</h2>     
-        </div>
+        <h2>Phonebook</h2>   
+        <Notification message={notification} />
         <FilterPersons persons={persons} findPerson={findPerson} handleFindPerson={handleFindPerson} />
 
         <h2>add a new</h2>
@@ -102,7 +84,7 @@ const App = () => {
         handleAddName={handleAddName} handleAddNumber={handleAddNumber}/>
         
         <h2>Numbers</h2>
-        <DisplayPersons persons={persons} findPerson={findPerson} deletePerson={deletePerson}/>
+        <DisplayPersons persons={persons} findPerson={findPerson} removePerson={removePerson}/>
     </div>
   )
 }
