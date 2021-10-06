@@ -1,0 +1,30 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "Traveling Blog",
+    "author": "Anton Ptushkin",
+    "url": "www.whatever.com",
+    "likes": 100
+}
+
+###
+
+DELETE http://localhost:3003/api/blogs/61538ac949eae5555c1a48d3
+
+###
+
+GET http://localhost:3003/api/users
+
+###
+
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "blogs": [],
+    "username": "root",
+    "name": "Superuser",
+    "password": "salainen"
+}
+
