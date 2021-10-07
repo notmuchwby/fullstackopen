@@ -2,15 +2,15 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "Traveling Blog",
-    "author": "Anton Ptushkin",
-    "url": "www.whatever.com",
-    "likes": 100
+    "title": "Food Blog",
+    "author": "Gordon Ramsay",
+    "url": "www.gordonramsay.com",
+    "likes": 6144,
+    "userId": "615e5d53b56df954a37d6fd6"
 }
 
-###
-
-DELETE http://localhost:3003/api/blogs/61538ac949eae5555c1a48d3
+### DELETE BLOG
+DELETE http://localhost:3003/api/blogs/615e59c1217452baf6483edd
 
 ###
 
@@ -23,8 +23,10 @@ Content-Type: application/json
 
 {
     "blogs": [],
-    "username": "root",
-    "name": "Superuser",
-    "password": "salainen"
+    "username": "johhnyboi22",
+    "name": "John",
+    "password": "password"
 }
 
+### DELETE USER
+DELETE http://localhost:3003/api/users/615e539e035e3159e6fc60f8
