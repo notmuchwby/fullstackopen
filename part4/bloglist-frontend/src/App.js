@@ -3,6 +3,9 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
+import LoginForm from './components/LoginForm'
+import BlogForm from './components/BlogForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -100,59 +103,29 @@ const App = () => {
   }
 
   const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-          <input
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
-      </div>
-      <div>
-        password
-          <input 
-            type="password"
-            value={password}
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
-      </div>
-      <button type="submit">Submit</button>
-    </form>
+    <Togglable buttonLabel="log in">
+      <LoginForm
+        username={username}
+        password={password}
+        handleLogin={handleLogin}
+        setUsername={setUsername}
+        setPassword={setPassword}
+      />   
+    </Togglable>
   )
 
   const blogForm = () => ( 
-    <form onSubmit={addBlog}>
-      <div>
-        title: 
-        <input
-          value={newBlog}
-          name="title"
-          onChange={handleTitleChange}
-        />
-      </div>
-
-      <div>
-        author:
-        <input
-          value={blogAuthor}
-          name="title"
-          onChange={handleAuthorChange}
-        />
-      </div>
-
-      <div>
-        url:
-        <input 
-          value={blogUrl}
-          name="url"
-          onChange={handleUrlChange}
-        />
-      </div>
-      <button type="submit">submit</button>
-    </form>
+   <Togglable buttonLabel="create blog">
+     <BlogForm
+        addBlog={addBlog}
+        newBlog={newBlog}
+        handleTitleChange={handleTitleChange}
+        blogAuthor={blogAuthor}
+        handleAuthorChange={handleAuthorChange}
+        blogUrl={blogUrl}
+        handleUrlChange={handleUrlChange}
+     /> 
+   </Togglable>
   )
 
   return ( 
