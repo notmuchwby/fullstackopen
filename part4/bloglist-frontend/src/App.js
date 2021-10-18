@@ -12,7 +12,7 @@ const App = () => {
   const [newBlog, setNewBlog] = useState('')
   const [blogAuthor, setBlogAuthor] = useState('')
   const [blogUrl, setBlogUrl] = useState('')
-  const [message, setMessage] = useState(null)
+
   const [notification, setNotification] = useState(null)
 
   const [username, setUsername] = useState('')
@@ -141,7 +141,7 @@ const App = () => {
           {blogForm()}
 
           {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} setBlogs={setBlogs} blogs={blogs}/>
           )}
         </div>
       }

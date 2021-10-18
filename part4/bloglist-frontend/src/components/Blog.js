@@ -1,14 +1,25 @@
-import React, {useState} from 'react'
-const Blog = ({blog}) => {
+import React, {useState } from 'react'
+import blogService from '../services/likes'
+
+const Blog = ({blog, setBlogs, blogs}) => {
 
   const [visible, setVisible] = useState(false)
-  const [likes, setLikes] = useState(0)
 
   const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
 
   const toggleVisibility = () => {
     setVisible(!visible)
+  }
+
+  const addLike = (id, newObject) => {
+    blogService.likes(id, newObject)
+      .then(returnedBlog => {
+        setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog))
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
 
   const blogStyle = {
@@ -32,8 +43,8 @@ const Blog = ({blog}) => {
           </div>
             <p>{blog.author}</p>
             <div>
-              likes {likes}
-              <button> like </button>
+              likes {blog.likes}
+              <button onClick={() => addLike(blog.id, blog)}> like </button>
             </div>
             <p>{blog.url}</p>
         </div>
