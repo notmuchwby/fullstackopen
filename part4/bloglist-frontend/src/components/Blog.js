@@ -1,7 +1,8 @@
 import React, {useState } from 'react'
-import blogService from '../services/likes'
+import likeService from '../services/likes'
+import blogService from '../services/blogs'
 
-const Blog = ({blog, setBlogs, blogs}) => {
+const Blog = ({blog, setBlogs, blogs, user}) => {
 
   const [visible, setVisible] = useState(false)
 
@@ -13,13 +14,19 @@ const Blog = ({blog, setBlogs, blogs}) => {
   }
 
   const addLike = (id, newObject) => {
-    blogService.likes(id, newObject)
+    likeService.likes(id, newObject)
       .then(returnedBlog => {
         setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog))
       })
       .catch(error => {
         console.log(error)
       })
+  }
+
+  const removeBlog = (id, user) => {
+    if(window.confirm(`remove blog ${blog.title} by ${blog.author}?`)) {
+      blogService.remove(id, user)
+    }
   }
 
   const blogStyle = {
@@ -36,7 +43,7 @@ const Blog = ({blog, setBlogs, blogs}) => {
           {blog.title}
           <button onClick={toggleVisibility}>view</button>
         </div>
-        <div style={showWhenVisible}>
+        <div style={showWhenVisible} className={'blog'}>
           <div>
             {blog.title}
             <button onClick={toggleVisibility}>hide</button>
@@ -47,6 +54,7 @@ const Blog = ({blog, setBlogs, blogs}) => {
               <button onClick={() => addLike(blog.id, blog)}> like </button>
             </div>
             <p>{blog.url}</p>
+            <button onClick={() => removeBlog(blog.id, user)}>remove</button>
         </div>
       </div>  
   )
