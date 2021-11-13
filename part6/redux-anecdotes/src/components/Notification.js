@@ -1,7 +1,10 @@
-
 import React from 'react'
+import { useDispatch } from 'react-redux'
+import { displayNotification } from '../reducers/notificationReducer'
 
 const Notification = () => {
+  const notification = useDispatch(displayNotification())
+
   const style = {
     border: 'solid',
     padding: 10,
@@ -9,7 +12,7 @@ const Notification = () => {
   }
   return (
     <div style={style}>
-      render here notification...
+      {notification}
     </div>
   )
 }
