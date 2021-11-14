@@ -1,9 +1,10 @@
-const initialState = ""
+const initialState = "dratute"
 
 const notificationReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'NOTIFICATION':
-            return state = action.data
+            state = action.notification
+            return state
         default:
             return state
     }
@@ -12,7 +13,7 @@ const notificationReducer = (state = initialState, action) => {
 export const displayNotification = () => {
     return {
         type: 'NOTIFICATION',
-        data: 'initial statement'
+        notification: 'initial statement'
     }
 }
 

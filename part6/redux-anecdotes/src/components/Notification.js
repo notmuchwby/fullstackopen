@@ -1,10 +1,8 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
-import { displayNotification } from '../reducers/notificationReducer'
+import { useSelector } from 'react-redux'
 
 const Notification = () => {
-  const notification = useDispatch(displayNotification())
-
+  const notification = useSelector(state => state.notification)
   const style = {
     border: 'solid',
     padding: 10,
